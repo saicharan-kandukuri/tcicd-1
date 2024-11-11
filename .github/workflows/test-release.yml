@@ -1,0 +1,29 @@
+# .github/workflows/test-release.yml
+name: Test Release Workflow
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  log-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Log Release Version
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: echo "Release Version: $RELEASE_TAG"
+
+      - name: Capture Action Run ID
+        id: capture_run_id
+        run: echo "::set-output name=run_id::${{ github.run_id }}"
+
+      - name: Save Action Run ID
+        uses: actions/upload-artifact@v2
+        with:
+          name: run_id
+          path: run_id.txt
+        run: echo ${{ steps.capture_run_id.outputs.run_id }} > run_id.txt
