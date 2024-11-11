@@ -19,4 +19,5 @@ jobs:
 
       - name: Capture Action Run ID
         id: capture_run_id
-        run: echo "::set-output name=run_id::${{ github.run_id }}"
+        run: |
+          echo "name=run_id::${{ github.run_id }}" >> $GITHUB_OUTPUT
